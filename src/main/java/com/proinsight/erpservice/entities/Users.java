@@ -27,6 +27,7 @@ public class Users {
 	private String province;
 	private String countryOrRegion;
 	private int type;//1 for Candidate, 2 for Admin, and 3 for Super Admin
+	private String program;
 	private String username;
 	private String password;
 	private long createdTime;
@@ -101,6 +102,12 @@ public class Users {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getProgram() {
+		return program;
+	}
+	public void setProgram(String program) {
+		this.program = program;
 	}
 	public String getUsername() {
 		return username;
