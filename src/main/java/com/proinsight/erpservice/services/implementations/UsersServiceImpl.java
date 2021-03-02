@@ -48,9 +48,6 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public int add(Users user) {
-		System.out.println("Adding/Inviting User"+user.getType());
-		System.out.println("Adding/Inviting User"+user.getFname());
-		System.out.println("Adding/Inviting User"+user.getLname());
 		System.out.println("Adding/Inviting User");
 		
 		//Validation
@@ -77,7 +74,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public int completeReg(Users user) {
-		System.out.println("Updating User");
+		System.out.println("Completing User Registration");
 		
 		//Validation
 		if(user.getCountryOrRegion() == null || user.getCountryOrRegion().isEmpty() || user.getEmail() == null || user.getEmail().isEmpty() || user.getFname() == null || user.getFname().isEmpty() 
@@ -100,7 +97,7 @@ public class UsersServiceImpl implements UsersService {
 			
 			return 1;
 		}catch(Exception e) {
-			System.err.println("Error While Updating User "+e);
+			System.err.println("Error While Completing User Registration "+e);
 			return 0;
 		}
 	}
@@ -192,16 +189,16 @@ public class UsersServiceImpl implements UsersService {
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.office365.com");
+			props.put("mail.smtp.host", "smtp.gmail.com");
 			props.put("mail.smtp.port", "587");
 			   
 			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
-			      return new PasswordAuthentication("segun.ajayi@proinsight.ca", "Fcc001ase?");
+			      return new PasswordAuthentication("fccinborn@gmail.com", "Brother123");
 			   }
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("segun.ajayi@proinsight.ca", false));
+			msg.setFrom(new InternetAddress("fccinborn@gmail.com", false));
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			if(type == 1) {
