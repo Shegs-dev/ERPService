@@ -82,7 +82,7 @@ public class UsersRestController {
 			int retValue = usersService.completeReg(user);
 			if(retValue == 1) {
 				response.setStatus("SUCCESS");
-				response.setMessage("Completed New User Registration Successfully");
+				response.setMessage("Thank you for your registration, your submission has been received and is being reviewed by Admin");
 				return new ResponseEntity<>(response, HttpStatus.CREATED);
 			}else if(retValue == 2) {
 				response.setStatus("EMPTY_TEXTFIELDS");

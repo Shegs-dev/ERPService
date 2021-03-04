@@ -26,6 +26,7 @@ import com.proinsight.erpservice.dtos.LoginDTO;
 import com.proinsight.erpservice.dtos.ResponseDTO;
 import com.proinsight.erpservice.dtos.UserFilterDTO;
 import com.proinsight.erpservice.entities.Users;
+import com.proinsight.erpservice.proxies.APIs;
 import com.proinsight.erpservice.repositories.UsersRepository;
 import com.proinsight.erpservice.services.UsersService;
 import com.proinsight.erpservice.utils.DateConverter;
@@ -189,32 +190,32 @@ public class UsersServiceImpl implements UsersService {
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.host", "smtp.office365.com");
 			props.put("mail.smtp.port", "587");
 			   
 			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
-			      return new PasswordAuthentication("fccinborn@gmail.com", "Brother123");
+			      return new PasswordAuthentication("admin@proinsight.ca", "1484Pro#");
 			   }
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("fccinborn@gmail.com", false));
+			msg.setFrom(new InternetAddress("admin@proinsight.ca", false));
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			if(type == 1) {
 				msg.setSubject("Olade Consulting - Candidate Invite");
-				msg.setContent("Please click <a href=' https://immense-fjord-45151.herokuapp.com/csignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
+				msg.setContent("Please click <a href='"+APIs.getStaging()+"csignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
 			}else {
 				msg.setSubject("Olade Consulting - Admin Invite");
-				msg.setContent("Please click <a href=' https://immense-fjord-45151.herokuapp.com/asignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
+				msg.setContent("Please click <a href='"+APIs.getStaging()+"asignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
 			}
 			msg.setSentDate(new Date());
 
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			if(type == 1) {
-				messageBodyPart.setContent("Please click <a href=' https://immense-fjord-45151.herokuapp.com/csignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
+				messageBodyPart.setContent("Please click <a href='"+APIs.getStaging()+"csignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
 			}else {
-				messageBodyPart.setContent("Please click <a href=' https://immense-fjord-45151.herokuapp.com/asignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
+				messageBodyPart.setContent("Please click <a href='"+APIs.getStaging()+"asignup.html?id=" + id + "'>here</a> to accept invitation. Thank you.<br>", "text/html");
 			}
 			
 			Multipart multipart = new MimeMultipart();
