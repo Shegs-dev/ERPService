@@ -20,7 +20,7 @@ public class ScheduleHistory {
 	private String candidateID;
 	private String adminID;
 	private long meetingTime;
-	private int status;//1 = both declined, 2 = admin approve, 3 = candidate approve, 4 = both approve,
+	private int status;//1 = both declined, 2 = admin approve, 3 = candidate approve, 4 = both approve, 5 = admin cancel, 6 = candidate cancel
 	private String meetingURL;
 	public String getId() {
 		return id;

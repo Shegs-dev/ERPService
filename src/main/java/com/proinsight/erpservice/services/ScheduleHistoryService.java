@@ -17,5 +17,7 @@ public interface ScheduleHistoryService {
 	int add(ScheduleHistory history);
 	int update(ScheduleHistory history);
 	List<ScheduleHistory> get(String scheduleTypeID, String candidateID);
+	List<ScheduleHistory> getAll();
+	int submit(String scheduleTypeID, String candidateID);
 
 }

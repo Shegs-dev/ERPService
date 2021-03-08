@@ -116,5 +116,53 @@ public class ScheduleHistoryRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 	}
+	
+	@RequestMapping(value = "/schedulehistory/getsAll", method = RequestMethod.GET)
+	@Operation(description = "This Service gets all schedule history by candidate and schedule type")
+    public ResponseEntity<List<?>> getsAll(){
+        System.out.println("API Call To Fetch All Schedule History By Candidate And Schedule Type");
+		
+		try {
+			return new ResponseEntity<>(scheduleHistoryService.getAll(), HttpStatus.OK);
+		} catch (Exception e) {
+            System.err.println("Exception occurred " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+	}
+	
+	@RequestMapping(value = "/schedulehistory/submit/{scheduleTypeID}/{candidateID}", method = RequestMethod.GET)
+	@Operation(description = "This Service creates a zoom meeting for schedule history on ERP")
+    public ResponseEntity<?> submit(@PathVariable String scheduleTypeID, @PathVariable String candidateID){
+        System.out.println("API Call To Create Zoom Meeting For Schedule History");
+		
+		try {
+			ResponseDTO response = new ResponseDTO();
+			int retValue = scheduleHistoryService.submit(scheduleTypeID, candidateID);
+			if(retValue == 1) {
+				response.setStatus("SUCCESS");
+				response.setMessage("Created Zoom Meeting Successfully");
+				return new ResponseEntity<>(response, HttpStatus.CREATED);
+			}else if(retValue == 2) {
+				response.setStatus("EMPTY_TEXTFIELDS");
+				response.setMessage("Fill Empty Textfield(s)");
+				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_REQUIRED);
+			}else if(retValue == 3) {
+				response.setStatus("ACCOUNT_INVALID");
+				response.setMessage("User Or Admin Account Invalid!");
+				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+			}else if(retValue == 4) {
+				response.setStatus("TYPE_INVALID");
+				response.setMessage("Schedule Type Invalid!");
+				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+			}else {
+				response.setStatus("FAILURE");
+				response.setMessage("Creating Zoom Meeting Failed");
+				return new ResponseEntity<>(response, HttpStatus.NOT_IMPLEMENTED);
+			}
+		}catch(Exception e) {
+			System.err.println("Exception occured "+e);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }

@@ -61,9 +61,10 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 			Optional<Users> admin = usersRepository.findById(history.getAdminID());
 			if(!admin.isPresent()) return 3;
 			scheduleHistoryRepository.save(history);
-			List<ScheduleHistory> hists = this.get(history.getScheduleTypeID(), history.getCandidateID());
+			
+			//List<ScheduleHistory> hists = this.get(history.getScheduleTypeID(), history.getCandidateID());
 			if(history.getStatus() == 2) {
-				System.out.println(this.sendCandidateemail(user.get().getEmail(), hists.get(hists.size() - 1).getId()));
+				System.out.println(this.sendCandidateemail(user.get().getEmail(), history.getScheduleTypeID(), history.getCandidateID()));
 			}else if(history.getStatus() == 3) {
 				Optional<ScheduleType> type = scheduleTypeRepository.findById(history.getScheduleTypeID());
 				if(!type.isPresent()) return 4;
@@ -95,9 +96,9 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 			Optional<Users> admin = usersRepository.findById(history.getAdminID());
 			if(!admin.isPresent()) return 3;
 			scheduleHistoryRepository.save(history);
-			List<ScheduleHistory> hists = this.get(history.getScheduleTypeID(), history.getCandidateID());
+			//List<ScheduleHistory> hists = this.get(history.getScheduleTypeID(), history.getCandidateID());
 			if(history.getStatus() == 2) {
-				System.out.println(this.sendCandidateemail(user.get().getEmail(), hists.get(hists.size() - 1).getId()));
+				System.out.println(this.sendCandidateemail(user.get().getEmail(), history.getScheduleTypeID(), history.getCandidateID()));
 			}else if(history.getStatus() == 3) {
 				Optional<ScheduleType> type = scheduleTypeRepository.findById(history.getScheduleTypeID());
 				if(!type.isPresent()) return 4;
@@ -117,11 +118,11 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 	public List<ScheduleHistory> get(String scheduleTypeID, String candidateID) {
 		System.out.println("Getting Candidate Schedule History");
 		
-		return scheduleHistoryRepository.findByCandidateIDAndScheduleTypeIDOrderByMeetingTimeAsc(scheduleTypeID, candidateID);
+		return scheduleHistoryRepository.findByCandidateIDAndScheduleTypeIDOrderByMeetingTimeAsc(candidateID, scheduleTypeID);
 	}
 	
 	//Candidate Email
-	private int sendCandidateemail(String email, String id) {
+	private int sendCandidateemail(String email, String scheduleTypeID, String candidateID) {
 		System.out.println("Sending Email");
 		
 		try {
@@ -141,11 +142,11 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			msg.setSubject("Olade Consulting - Candidate Meeting Schedule");
-			msg.setContent("Please click <a href='"+APIs.getStaging()+"csignup.html?id=" + id + "'>here</a> to accept or decline meeting schedule. Thank you.<br>", "text/html");
+			msg.setContent("Please click <a href='"+APIs.getStaging()+"candidate-schedule.html?scheduleTypeID=" + scheduleTypeID + "&candidateID=" + candidateID + "'>here</a> to accept or decline meeting schedule. Thank you.<br>", "text/html");
 			msg.setSentDate(new Date());
 
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent("Please click <a href='"+APIs.getStaging()+"csignup.html?id=" + id + "'>here</a> to accept or decline meeting schedule. Thank you.<br>", "text/html");
+			messageBodyPart.setContent("Please click <a href='"+APIs.getStaging()+"candidate-schedule.html?scheduleTypeID=" + scheduleTypeID + "&candidateID=" + candidateID + "'>here</a> to accept or decline meeting schedule. Thank you.<br>", "text/html");
 			
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);
@@ -204,6 +205,18 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 			System.err.println("Error While Sending Mail "+e);
 			return 0;
 		}
+	}
+
+	@Override
+	public List<ScheduleHistory> getAll() {
+		// TODO Auto-generated method stub
+		return scheduleHistoryRepository.findAll();
+	}
+
+	@Override
+	public int submit(String scheduleTypeID, String candidateID) {
+		System.out.println("Submitting Schedule History");
+		return 1;
 	}
 
 }
