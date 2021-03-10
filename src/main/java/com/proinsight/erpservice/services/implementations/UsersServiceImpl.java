@@ -25,8 +25,10 @@ import org.springframework.stereotype.Service;
 import com.proinsight.erpservice.dtos.LoginDTO;
 import com.proinsight.erpservice.dtos.ResponseDTO;
 import com.proinsight.erpservice.dtos.UserFilterDTO;
+import com.proinsight.erpservice.entities.PortalAccess;
 import com.proinsight.erpservice.entities.Users;
 import com.proinsight.erpservice.proxies.APIs;
+import com.proinsight.erpservice.proxies.EmailCorrespondence;
 import com.proinsight.erpservice.repositories.UsersRepository;
 import com.proinsight.erpservice.services.UsersService;
 import com.proinsight.erpservice.utils.DateConverter;
@@ -42,6 +44,8 @@ public class UsersServiceImpl implements UsersService {
 	//private fields
 	@Autowired
 	UsersRepository usersRepository;
+	@Autowired
+	PortalAccessServiceImpl portalAccessServiceImpl;
 	@Autowired
 	DateConverter dateConverter;
 	@Autowired
@@ -66,6 +70,12 @@ public class UsersServiceImpl implements UsersService {
 			//Sending Email
 			Users cusr = usersRepository.findByUsernameOrEmail("", user.getEmail());
 			System.out.println(this.sendmail(user.getEmail(), cusr.getId(), user.getType()));
+			
+			//Adding Portal Access
+			PortalAccess access = new PortalAccess();
+			access.setCandidateID(cusr.getId());
+			access.setStatus(0);
+			System.out.println(portalAccessServiceImpl.add(access));
 			return 1;
 		}catch(Exception e) {
 			System.err.println("Error While Adding/Inviting User "+e);
@@ -190,16 +200,16 @@ public class UsersServiceImpl implements UsersService {
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.office365.com");
+			props.put("mail.smtp.host", "smtp.gmail.com");
 			props.put("mail.smtp.port", "587");
 			   
 			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
-			      return new PasswordAuthentication("admin@proinsight.ca", "1484Pro#");
+			      return new PasswordAuthentication(EmailCorrespondence.getEmail(), EmailCorrespondence.getPassword());
 			   }
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("admin@proinsight.ca", false));
+			msg.setFrom(new InternetAddress(EmailCorrespondence.getEmail(), false));
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			if(type == 1) {

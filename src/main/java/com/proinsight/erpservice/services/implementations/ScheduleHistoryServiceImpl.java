@@ -26,6 +26,7 @@ import com.proinsight.erpservice.entities.ScheduleHistory;
 import com.proinsight.erpservice.entities.ScheduleType;
 import com.proinsight.erpservice.entities.Users;
 import com.proinsight.erpservice.proxies.APIs;
+import com.proinsight.erpservice.proxies.EmailCorrespondence;
 import com.proinsight.erpservice.repositories.ScheduleHistoryRepository;
 import com.proinsight.erpservice.repositories.ScheduleTypeRepository;
 import com.proinsight.erpservice.repositories.UsersRepository;
@@ -134,11 +135,11 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 			   
 			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
-			      return new PasswordAuthentication("admin@proinsight.ca", "1484Pro#");
+			      return new PasswordAuthentication(EmailCorrespondence.getEmail(), EmailCorrespondence.getPassword());
 			   }
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("admin@proinsight.ca", false));
+			msg.setFrom(new InternetAddress(EmailCorrespondence.getEmail(), false));
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			msg.setSubject("Olade Consulting - Candidate Meeting Schedule");
@@ -177,11 +178,11 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 			   
 			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
-			      return new PasswordAuthentication("admin@proinsight.ca", "1484Pro#");
+			      return new PasswordAuthentication(EmailCorrespondence.getEmail(), EmailCorrespondence.getPassword());
 			   }
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("admin@proinsight.ca", false));
+			msg.setFrom(new InternetAddress(EmailCorrespondence.getEmail(), false));
 
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			msg.setSubject("Olade Consulting - Candidate Meeting Schedule Update");
