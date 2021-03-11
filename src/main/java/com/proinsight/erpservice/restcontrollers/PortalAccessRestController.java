@@ -84,6 +84,14 @@ public class PortalAccessRestController {
 				response.setStatus("ACCESS_DISCREPANCY");
 				response.setMessage("Candidate Portal Access Has Some Discrepancy!");
 				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+			}else if(retValue == 4) {
+				response.setStatus("ACCOUNT_NONEXISTS");
+				response.setMessage("Candidate Account Does Not Exist!");
+				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+			}else if(retValue == 5) {
+				response.setStatus("ACCESS_IRREVOKABLE");
+				response.setMessage("Candidate Has Been Granted Portal Access. To Revoke Please Contact Your Server Admin!");
+				return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
 			}else {
 				response.setStatus("FAILURE");
 				response.setMessage("Updating Portal Access Failed");
