@@ -167,5 +167,18 @@ public class UsersRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 	}
+	
+	@RequestMapping(value = "/users/delete/{email}", method = RequestMethod.DELETE)
+	@Operation(description = "This Service finds by user ids")
+    public ResponseEntity<?> delete(@PathVariable String email){
+        System.out.println("API Call To Fetch Users By IDs");
+		
+		try {
+			return new ResponseEntity<>(usersService.delete(email), HttpStatus.OK);
+		} catch (Exception e) {
+            System.err.println("Exception occurred " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+	}
 
 }

@@ -23,5 +23,6 @@ public interface UsersService {
 	List<Users> find(UserFilterDTO filterDTO);
 	List<Users> getByIDs(List<String> ids);
 	ResponseDTO doLogin(LoginDTO loginDTO);
+	int delete(String email);
 
 }

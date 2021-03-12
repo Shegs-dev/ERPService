@@ -75,7 +75,7 @@ public class UsersServiceImpl implements UsersService {
 			PortalAccess access = new PortalAccess();
 			access.setCandidateID(cusr.getId());
 			access.setStatus(0);
-			System.out.println(portalAccessServiceImpl.add(access));
+			//System.out.println(portalAccessServiceImpl.add(access));
 			return 1;
 		}catch(Exception e) {
 			System.err.println("Error While Adding/Inviting User "+e);
@@ -156,7 +156,7 @@ public class UsersServiceImpl implements UsersService {
 		System.out.println("Getting Users");
 		
 		if(type == 0) return usersRepository.findAll();
-		return usersRepository.findByType(type);
+		return usersRepository.findByTypeOrderByCreatedDateDesc(type);
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class UsersServiceImpl implements UsersService {
 	public List<Users> getByIDs(List<String> ids) {
 		System.out.println("Getting By IDs");
 		
-		return usersRepository.findByIdIn(ids);
+		return usersRepository.findByIdInOrderByCreatedTimeDesc(ids);
 	}
 	
 	private int sendmail(String email, String id, int type) {
@@ -244,6 +244,13 @@ public class UsersServiceImpl implements UsersService {
 		}
 		
 		   
+	}
+
+	@Override
+	public int delete(String email) {
+		Users user = usersRepository.findByUsernameOrEmail("", email);
+		usersRepository.delete(user);
+		return 1;
 	}
 
 }

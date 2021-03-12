@@ -19,8 +19,8 @@ public interface UsersRepository extends MongoRepository<Users, String> {
 
 	Users findByUsernameOrEmail(String username, String email);
 
-	List<Users> findByType(int type);
+	List<Users> findByIdInOrderByCreatedTimeDesc(List<String> ids);
 
-	List<Users> findByIdIn(List<String> ids);
+	List<Users> findByTypeOrderByCreatedDateDesc(int type);
 
 }
